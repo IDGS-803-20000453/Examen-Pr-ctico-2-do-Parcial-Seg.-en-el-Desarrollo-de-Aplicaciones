@@ -44,7 +44,7 @@ def login_post():
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
 
-
+# Reemplazamos signup por register
 @auth.route('/register')
 def register():
     return render_template('/security/register.html')
