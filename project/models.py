@@ -32,3 +32,11 @@ class Role(RoleMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description =  db.Column(db.String(255))
+class Producto(db.Model):
+    __tablename__ = 'producto'
+    id = db.Column(db.Integer(), primary_key=True)
+    nombre = db.Column(db.String(80), unique=True)
+    precio = db.Column(db.Integer())
+    marca = db.Column(db.String(255))
+    cantidad = db.Column(db.Integer())
+    imagen = db.Column(db.String(255))

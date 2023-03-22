@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Editar producto</h1>
+  <form method="POST">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      {{ form.nombre.label(class="control-label") }}
+      {{ form.nombre(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.precio.label(class="control-label") }}
+      {{ form.precio(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.marca.label(class="control-label") }}
+      {{ form.marca(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.cantidad.label(class="control-label") }}
+      {{ form.cantidad(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+  </form>
+{% endblock %}

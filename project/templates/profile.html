@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h1 class="title">
   Bienvenido, {{ name }}!
 </h1>
+<section class="section">
+  <div class="container">
+      <h2 class="title">
+          Nuestra visión
+      </h2>
+      <div class="columns is-multiline">
+          <div class="column is-half">
+            <p>En Compumesa, nuestra visión es ser líderes en la industria tecnológica ofreciendo productos innovadores y de alta calidad que mejoren la vida de las personas. Queremos ser reconocidos por nuestra excelencia en el servicio al cliente, nuestra responsabilidad social y nuestro compromiso con la satisfacción de nuestros clientes.</p>
+          </div>
+          <div class="column is-half">
+            <img src="../static/img/vision.jpg" alt="Visión de Compumesa">
+          </div>
+      </div>
+  </div>
+</section>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Bienvenido, {{ name }}!
+</h1>
+<h1 class="mt-4 title text-center">
+ Productos
+</h1>
+<div class="row mb-4" >
+    {% for row in productos %}
+    <div class="card mr-5 mt-4" style="width: 20rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{ row.nombre }}</h5>
+          <p class="card-text">Precio {{ row.precio }} <br> Cantidad Disponible {{ row.cantidad }}<br> Marca {{ row.marca }}</p>
+          <a href="#" class="btn btn-primary">Comprar</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

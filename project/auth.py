@@ -33,11 +33,16 @@ def login_post():
 
     #Verificamos si el usuario existe
     #Tomamos el password proporcionado por el usuario lo hasheamos, y lo comparamos con el password de la base de datos.
-    if not user or not check_password_hash(user.password, password):
-    #if not user or not user.password==encrypt_password(password):
-        #Si el usuario no existe o no coinciden los passwords
+    if user and check_password_hash(user.password, password):
+        if user.has_role('admin'):
+            login_user(user, remember=remember)
+            return redirect(url_for('main.profile'))
+        elif user.has_role('user'):
+            login_user(user, remember=remember)
+            return redirect(url_for('main.productos'))
+    else:
         flash('El usuario y/o la contraseña son incorrectos')
-        return redirect(url_for('auth.login')) #Si el usuario no existe o el password es incorrecto regresamos a login
+        return redirect(url_for('auth.login'))
     
     #Si llegamos a este punto sabemos que el usuario tiene datos correctos.
     #Creamos una sessión y logueamos al usuario

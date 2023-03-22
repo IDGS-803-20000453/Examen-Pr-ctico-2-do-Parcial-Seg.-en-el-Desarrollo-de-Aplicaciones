@@ -1,0 +1,46 @@
+{% extends "base.html" %} 
+ 
+{% block content%}
+  {% from "_macros.html" import render_field %}
+
+  <div class="container mt-4">
+   <div class="row">
+       <form name="sent" action="/modificar" id="form1" method="POST">
+        
+        <div class="row control-group">
+            <div class="form-group col-xs-12 float-label-form-group controls d-none" >
+                {{ render_field(form.id, class='form-control') }}
+            </div>
+        </div>
+           <div class="row control-group">
+               <div class="form-group col-xs-12 float-label-form-group controls">
+                   {{ render_field(form.nombre, class='form-control') }}
+               </div>
+           </div>
+           <div class="row control-group">
+               <div class="form-group col-xs-12 float-label-form-group controls">
+                   {{ render_field(form.precio, class='form-control') }}
+               </div>
+           </div>
+           <div class="row control-group">
+               <div class="form-group col-xs-12 float-label-form-group controls">
+                   {{ render_field(form.marca, class='form-control') }}
+               </div>
+           </div>
+           <div class="row control-group">
+            <div class="form-group col-xs-12 float-label-form-group controls">
+                {{ render_field(form.cantidad, class='form-control') }}
+            </div>
+        </div>
+        <div class="row control-group">
+            <div class="form-group col-xs-12 float-label-form-group controls">
+                {{ render_field(form.imagen, class='form-control') }}
+            </div>
+        </div>
+           <input type="submit" id="modificar" class="btn btn-warning" name="modificar" value="Modificar"/>
+           <a href="profile" class="btn btn-success">Cancelar</a>
+       </form>
+   </div>
+  </div>
+
+{% endblock %}
