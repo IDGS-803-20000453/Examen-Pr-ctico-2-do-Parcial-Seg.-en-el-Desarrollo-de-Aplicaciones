@@ -17,6 +17,7 @@ from . import db, userDataStore
 #Creamos el BluePrint y establecemos que todas estas rutas deben estar dentro de /security para sobre escribir las vistas por omisión de flask-security.
 #Por lo que ahora las rutas deberán ser /security/login y security/register
 auth = Blueprint('auth', __name__, url_prefix='/security')
+from flask import current_app as app
 
 @auth.route('/login')
 def login():
@@ -34,6 +35,9 @@ def login_post():
     #Verificamos si el usuario existe
     #Tomamos el password proporcionado por el usuario lo hasheamos, y lo comparamos con el password de la base de datos.
     if user and check_password_hash(user.password, password):
+        app.logger.info('Inicio de sesión exitoso para el usuario %s con contraseña %s y ID %s', email, password, user.id)
+
+
         if user.has_role('admin'):
             login_user(user, remember=remember)
             return redirect(url_for('main.profile'))
@@ -41,6 +45,8 @@ def login_post():
             login_user(user, remember=remember)
             return redirect(url_for('main.productos'))
     else:
+        app.logger.warning ('Inicio de sesión incorrecto verifique su correo %s y/o contraseña %s', email, password)
+
         flash('El usuario y/o la contraseña son incorrectos')
         return redirect(url_for('auth.login'))
     
@@ -59,19 +65,29 @@ def register_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
-
+     # Verificar si los campos no están en blanco
+    if len(email) == 0 or len(name) == 0 or len(password) == 0:
+        app.logger.error('Registro de cuenta incorrecto: se proporcionó un campo vacío')
+        flash('Debe proporcionar un correo electrónico, nombre y contraseña para registrarse')
+        return redirect(url_for('auth.register'))
     #Consultamos si existe un usuario ya registrado con el email.
     user = User.query.filter_by(email=email).first()
 
     if user: #Si se encontró un usuario, redireccionamos de regreso a la página de registro
+        app.logger.warning ('Registro de cuenta incorrecto, el correo:  %s ya esta en uso', email)
+
         flash('El correo electrónico ya existe')
         return redirect(url_for('auth.register'))
 
     #Creamos un nuevo usuario con los datos del formulario.
     # Hacemos un hash a la contraseña para que no se guarde la versión de texto sin formato
     #new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+    app.logger.info('Registro exitoso para el usuario %s con contraseña %s', email, password)
+
     userDataStore.create_user(
+
         name=name, email=email, password=generate_password_hash(password, method='sha256')
+
     )
     #userDataStore.create_user(
         #name=name, email=email, password=encrypt_password(password)

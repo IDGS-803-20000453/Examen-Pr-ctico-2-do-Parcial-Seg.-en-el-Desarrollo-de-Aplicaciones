@@ -9,13 +9,16 @@ from project.forms import ProductoForm
 #Importamos el objeto de la BD desde __init__.py
 from . import db
 from .models import Producto
-
+from flask import current_app
 
 main = Blueprint('main', __name__)
-
+from flask import current_app as app
 #Definimos la ruta a la página principal
 @main.route('/')
+
 def index():
+    app.logger.info('La página principal ha sido accedida')
+
     return render_template('index.html')
 
 #Definimos la ruta a la página de perfil
@@ -31,13 +34,33 @@ def profile():
 def agregar_producto():
     form = ProductoForm(request.form)
     if request.method == 'POST' and form.validate():
+        if not form.nombre.data:
+            flash('Falta el campo nombre')
+            app.logger.error('Falta llenar el campo nombre en agregar_producto')
+            return redirect(url_for('main.agregar_producto'))
+        if not form.precio.data:
+            flash('Falta el campo precio')
+            app.logger.error('Falta llenar el campo precio en agregar_producto')
+            return redirect(url_for('main.agregar_producto'))
+        if not form.marca.data:
+            flash('Falta el campo marca')
+            app.logger.error('Falta llenar el campo marca en agregar_producto')
+            return redirect(url_for('main.agregar_producto'))
+        if not form.cantidad.data:
+            flash('Falta el campo cantidad')
+            app.logger.error('Falta llenar el campo cantidad en agregar_producto')
+            return redirect(url_for('main.agregar_producto'))
+
         producto = Producto(nombre=form.nombre.data, precio=form.precio.data,
                             marca=form.marca.data, cantidad=form.cantidad.data)
         db.session.add(producto)
         db.session.commit()
+        flash('Producto agregado exitosamente')
+        app.logger.info('El producto %s se ha agregado exitosamente con un precio de %s, una cantidad de %s y una marca de %s',form.nombre.data, form.precio.data, form.cantidad.data, form.marca.data)
         return redirect(url_for('main.lista_productos'))
 
     return render_template('agregar_producto.html', form=form)
+
 
 @main.route('/lista_productos')
 @login_required
